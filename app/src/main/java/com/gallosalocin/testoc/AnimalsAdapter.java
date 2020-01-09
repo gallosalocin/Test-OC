@@ -11,17 +11,42 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.AnimalsViewHolder> {
+
     private ArrayList<Animals> mAnimalsArrayList;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onDeleteClick(int position);
+    }
+
+    public void setOnItemClickLister(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public static class AnimalsViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mImageView;
         public TextView mTextView;
+        public ImageView mDeleteImage;
 
-        public AnimalsViewHolder(View itemView) {
+        public AnimalsViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.animals_imageView);
             mTextView = itemView.findViewById(R.id.animals_nom_txt);
+            mDeleteImage = itemView.findViewById(R.id.animals_delete_btn);
+
+            mDeleteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onDeleteClick(position);
+                        }
+                    }
+
+                }
+            });
         }
     }
 
@@ -31,8 +56,8 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.AnimalsV
 
     @Override
     public AnimalsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.animals, parent, false);
-        AnimalsViewHolder animalsViewHolder = new AnimalsViewHolder(v);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.animals, parent, false);
+        AnimalsViewHolder animalsViewHolder = new AnimalsViewHolder(view, mListener);
         return animalsViewHolder;
     }
 
