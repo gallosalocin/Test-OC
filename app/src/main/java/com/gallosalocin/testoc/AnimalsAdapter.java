@@ -17,9 +17,11 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.AnimalsV
 
     public interface OnItemClickListener {
         void onDeleteClick(int position);
+        void onItemClick (int position);
     }
 
-    public void setOnItemClickLister(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
+
         mListener = listener;
     }
 
@@ -34,6 +36,18 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.AnimalsV
             mImageView = itemView.findViewById(R.id.animals_cardview_imageView);
             mTextView = itemView.findViewById(R.id.animals_cardview_nom_txt);
             mDeleteImage = itemView.findViewById(R.id.animals_cardview_delete_btn);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
             mDeleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override

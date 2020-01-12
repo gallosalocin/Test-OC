@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -76,7 +78,7 @@ public class AnimalsList extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickLister(new AnimalsAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new AnimalsAdapter.OnItemClickListener() {
             @Override
             public void onDeleteClick(final int position) {
                 AlertDialog.Builder myDialog = new AlertDialog.Builder(mAnimalsListActivity);
@@ -95,6 +97,13 @@ public class AnimalsList extends AppCompatActivity {
                     }
                 });
                 myDialog.show();
+            }
+
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(AnimalsList.this, AnimalsDetails.class);
+                intent.putExtra("Animal Detail", mAnimalsArrayList.get(position));
+                startActivity(intent);
             }
         });
 
