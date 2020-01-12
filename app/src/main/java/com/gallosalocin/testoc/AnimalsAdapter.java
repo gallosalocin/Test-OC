@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.AnimalsViewHolder> {
 
-    private ArrayList<Animals> mAnimalsArrayList;
+    private ArrayList<AnimalsCardView> mAnimalsArrayList;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
@@ -31,9 +31,9 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.AnimalsV
 
         public AnimalsViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.animals_imageView);
-            mTextView = itemView.findViewById(R.id.animals_nom_txt);
-            mDeleteImage = itemView.findViewById(R.id.animals_delete_btn);
+            mImageView = itemView.findViewById(R.id.animals_cardview_imageView);
+            mTextView = itemView.findViewById(R.id.animals_cardview_nom_txt);
+            mDeleteImage = itemView.findViewById(R.id.animals_cardview_delete_btn);
 
             mDeleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -44,26 +44,25 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.AnimalsV
                             listener.onDeleteClick(position);
                         }
                     }
-
                 }
             });
         }
     }
 
-    public AnimalsAdapter(ArrayList<Animals> animalsArrayList) {
+    public AnimalsAdapter(ArrayList<AnimalsCardView> animalsArrayList) {
         mAnimalsArrayList = animalsArrayList;
     }
 
     @Override
     public AnimalsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.animals, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.animals_cardview, parent, false);
         AnimalsViewHolder animalsViewHolder = new AnimalsViewHolder(view, mListener);
         return animalsViewHolder;
     }
 
     @Override
     public void onBindViewHolder(AnimalsViewHolder holder, int position) {
-        Animals currentAnimals = mAnimalsArrayList.get(position);
+        AnimalsCardView currentAnimals = mAnimalsArrayList.get(position);
 
         holder.mImageView.setImageResource(currentAnimals.getImageResource());
         holder.mTextView.setText(currentAnimals.getName());

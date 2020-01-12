@@ -1,11 +1,11 @@
 package com.gallosalocin.testoc;
 
-public class Animals {
+public class AnimalsCardView {
 
     private int mImageResource;
     private String mName;
 
-    public Animals(int imageResource, String name) {
+    public AnimalsCardView(int imageResource, String name) {
         mImageResource = imageResource;
         mName = name;
     }

@@ -20,6 +20,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setButtons();
+
+    }
+
+    private void validate(String userEmail, String userPassword) {
+        if ((userEmail.equals("admin@admin.com")) && (userPassword.equals("admin"))) {
+            Intent animalsList = new Intent(MainActivity.this, AnimalsList.class);
+            startActivity(animalsList);
+        } else {
+            Toast.makeText(this, "Email ou Password incorrect!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setButtons() {
         mEmailInput = findViewById(R.id.activity_main_email_input);
         mPasswordInput = findViewById(R.id.activity_main_password_input);
         mLoginButton = findViewById(R.id.activity_main_login_btn);
@@ -30,15 +44,5 @@ public class MainActivity extends AppCompatActivity {
                 validate(mEmailInput.getText().toString(), mPasswordInput.getText().toString());
             }
         });
-    }
-
-    private void validate (String userEmail, String userPassword) {
-        if ((userEmail.equals("admin@admin.com")) && (userPassword.equals("admin"))){
-            Intent animalsList = new Intent(MainActivity.this, AnimalsList.class);
-            startActivity(animalsList);
-        }else{
-            Toast.makeText(this, "Email ou Password incorrect!",
-                    Toast.LENGTH_SHORT).show();
-        }
     }
 }

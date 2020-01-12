@@ -1,9 +1,11 @@
 package com.gallosalocin.testoc;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -11,11 +13,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class AnimalsList extends AppCompatActivity {
-    private ArrayList<Animals> mAnimalsArrayList;
+    private ArrayList<AnimalsCardView> mAnimalsArrayList;
     private RecyclerView mRecyclerView;
     private AnimalsAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private AnimalsList mAnimalsListActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,6 @@ public class AnimalsList extends AppCompatActivity {
 
     }
 
-
     public void removeItem(int position) {
         mAnimalsArrayList.remove(position);
         mAdapter.notifyItemRemoved(position);
@@ -35,30 +36,30 @@ public class AnimalsList extends AppCompatActivity {
 
     public void createAnimalsList() {
         mAnimalsArrayList = new ArrayList<>();
-        mAnimalsArrayList.add(new Animals(R.drawable.butterfly_icon, "Papillon"));
-        mAnimalsArrayList.add(new Animals(R.drawable.dolphin_icon, "Dauphin"));
-        mAnimalsArrayList.add(new Animals(R.drawable.fish_icon, "Poisson"));
-        mAnimalsArrayList.add(new Animals(R.drawable.lion_icon, "Lion"));
-        mAnimalsArrayList.add(new Animals(R.drawable.rabbit_icon, "Lapin"));
-        mAnimalsArrayList.add(new Animals(R.drawable.snake_icon, "Serpent"));
-        mAnimalsArrayList.add(new Animals(R.drawable.zebra_icon, "Zèbre"));
-        mAnimalsArrayList.add(new Animals(R.drawable.bird_icon, "Oiseau"));
-        mAnimalsArrayList.add(new Animals(R.drawable.cat_face_icon, "Chat"));
-        mAnimalsArrayList.add(new Animals(R.drawable.dog_russel_grin_icon, "Chien"));
-        mAnimalsArrayList.add(new Animals(R.drawable.elephant_icon, "Eléphant"));
-        mAnimalsArrayList.add(new Animals(R.drawable.hippopotamus_icon, "Hippopotame"));
-        mAnimalsArrayList.add(new Animals(R.drawable.horse_icon, "Cheval"));
-        mAnimalsArrayList.add(new Animals(R.drawable.ladybird_icon, "Coccinelle"));
-        mAnimalsArrayList.add(new Animals(R.drawable.snail_icon, "Escargot"));
-        mAnimalsArrayList.add(new Animals(R.drawable.panda_icon, "Panda"));
-        mAnimalsArrayList.add(new Animals(R.drawable.guepard_icon, "Guépard"));
-        mAnimalsArrayList.add(new Animals(R.drawable.loup_icon, "Loup"));
-        mAnimalsArrayList.add(new Animals(R.drawable.renard_icon, "Renard"));
-        mAnimalsArrayList.add(new Animals(R.drawable.koala_icon, "Koala"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.butterfly_icon, "Papillon"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.dolphin_icon, "Dauphin"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.fish_icon, "Poisson"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.lion_icon, "Lion"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.rabbit_icon, "Lapin"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.snake_icon, "Serpent"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.zebra_icon, "Zèbre"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.bird_icon, "Oiseau"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.cat_face_icon, "Chat"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.dog_russel_grin_icon, "Chien"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.elephant_icon, "Eléphant"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.hippopotamus_icon, "Hippopotame"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.horse_icon, "Cheval"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.ladybird_icon, "Coccinelle"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.snail_icon, "Escargot"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.panda_icon, "Panda"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.guepard_icon, "Guépard"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.loup_icon, "Loup"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.renard_icon, "Renard"));
+        mAnimalsArrayList.add(new AnimalsCardView(R.drawable.koala_icon, "Koala"));
 
-        Collections.sort(mAnimalsArrayList, new Comparator<Animals>() {
+        Collections.sort(mAnimalsArrayList, new Comparator<AnimalsCardView>() {
             @Override
-            public int compare(Animals o1, Animals o2) {
+            public int compare(AnimalsCardView o1, AnimalsCardView o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
@@ -70,14 +71,30 @@ public class AnimalsList extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new AnimalsAdapter(mAnimalsArrayList);
         mAdapter.notifyDataSetChanged();
+        this.mAnimalsListActivity = this;
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickLister(new AnimalsAdapter.OnItemClickListener() {
             @Override
-            public void onDeleteClick(int position) {
-                removeItem(position);
+            public void onDeleteClick(final int position) {
+                AlertDialog.Builder myDialog = new AlertDialog.Builder(mAnimalsListActivity);
+                myDialog.setTitle("Supprimer");
+                myDialog.setMessage("Supprimer cet animal de la liste ?");
+                myDialog.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeItem(position);
+                    }
+                });
+                myDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                myDialog.show();
             }
         });
 
