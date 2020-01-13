@@ -16,10 +16,10 @@ public class AnimalsDetails extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        AnimalsCardView animalsList = intent.getParcelableExtra("Animal Detail");
+        AnimalsCardView animalsCardView = intent.getParcelableExtra("Animal Detail");
 
-        int imageRes = animalsList.getImageResource();
-        String name = animalsList.getName();
+        int imageRes = animalsCardView.getImageResource();
+        String name = animalsCardView.getName();
 
         ImageView imageView = findViewById(R.id.animals_details_imageView);
         imageView.setImageResource(imageRes);

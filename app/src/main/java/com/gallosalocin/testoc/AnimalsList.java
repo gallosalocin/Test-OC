@@ -9,10 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 public class AnimalsList extends AppCompatActivity {
     private ArrayList<AnimalsCardView> mAnimalsArrayList;
@@ -20,6 +24,7 @@ public class AnimalsList extends AppCompatActivity {
     private AnimalsAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private AnimalsList mAnimalsListActivity;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +33,24 @@ public class AnimalsList extends AppCompatActivity {
 
         createAnimalsList();
         buildRecyclerView();
+        configFab();
 
+    }
+
+    public void configFab() {
+        mFab = findViewById(R.id.activity_animals_list_fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addRandomItem();
+            }
+        });
+    }
+
+    public void addRandomItem() {
+        mAnimalsArrayList.add(mAnimalsArrayList.get(new Random().nextInt(mAnimalsArrayList.size())));
+        mAdapter.notifyDataSetChanged();
+        sortList();
     }
 
     public void removeItem(int position) {
@@ -59,6 +81,10 @@ public class AnimalsList extends AppCompatActivity {
         mAnimalsArrayList.add(new AnimalsCardView(R.drawable.renard_icon, "Renard"));
         mAnimalsArrayList.add(new AnimalsCardView(R.drawable.koala_icon, "Koala"));
 
+        sortList();
+    }
+
+    public void sortList() {
         Collections.sort(mAnimalsArrayList, new Comparator<AnimalsCardView>() {
             @Override
             public int compare(AnimalsCardView o1, AnimalsCardView o2) {
@@ -106,7 +132,6 @@ public class AnimalsList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }
 
